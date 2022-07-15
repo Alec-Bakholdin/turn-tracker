@@ -8,9 +8,9 @@ import { AuthService } from './auth.service';
 import { Socket } from 'socket.io';
 import { UserDto } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 
-export interface SocketData {
-  user: UserDto;
-  lobbyId: string;
+export class SocketData {
+  user: UserDto = null;
+  lobbyId: string = null;
 }
 
 @WebSocketGateway({ cors: { origin: '*' } })

@@ -6,6 +6,7 @@ import GameConfig from './GameConfig';
 import { LOBBY_UPDATE_EVENT } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { useAtom } from 'jotai';
 import lobbyAtom from '../../state/lobby';
+import { environment } from '../../../environments/environment';
 
 export default function Lobby(): React.ReactElement {
   const { isSuccess, data } = useAuthQuery();
@@ -17,7 +18,7 @@ export default function Lobby(): React.ReactElement {
 
   return (
     <SocketProvider
-      url={'http://localhost:3001'}
+      url={environment.socketBaseUrl}
       open={isSuccess}
       opts={{
         extraHeaders: { authorization: data?.authToken ?? '' },

@@ -1,8 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { SocketData } from './auth/auth.gateway';
+import { Socket } from 'socket.io';
 
-const extractSocketData = (ctx: ExecutionContext): SocketData =>
-  ctx.switchToWs().getData<SocketData>();
+const extractSocketData = (ctx: ExecutionContext): SocketData => {
+  const socket = ctx.switchToWs().getClient<Socket>();
+  return socket.data as SocketData;
+};
 
 export const Data = createParamDecorator(
   (data: string, ctx: ExecutionContext) => {

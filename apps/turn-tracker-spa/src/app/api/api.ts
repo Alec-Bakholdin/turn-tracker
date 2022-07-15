@@ -3,9 +3,10 @@ import {
   AuthDto,
   UserDto,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
+import { environment } from '../../environments/environment';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: environment.apiBaseUrl,
 });
 export const api = {
   login: async (authToken?: string) => {

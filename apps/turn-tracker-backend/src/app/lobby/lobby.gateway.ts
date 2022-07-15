@@ -1,8 +1,9 @@
 import {
-  OnGatewayInit,
+  OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  WsResponse,
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import { LobbyService } from './lobby.service';
@@ -16,18 +17,22 @@ import {
 import { User } from '../socket-data.decorator';
 
 @WebSocketGateway({ cors: true })
-export class LobbyGateway implements OnGatewayInit {
+export class LobbyGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Socket;
 
   constructor(private readonly lobbyService: LobbyService) {}
 
   @SubscribeMessage('message')
-  handleMessage(@User() user: UserDto): string {
-    return JSON.stringify(user);
+  handleMessage(@User() user: UserDto): WsResponse<string> {
+    console.log(user);
+    return { event: 'message', data: JSON.stringify(user) };
   }
 
-  afterInit(client: Socket) {
+  handleConnection(client: Socket) {
+    if (!client?.data) {
+      return;
+    }
     const { user, lobbyId } = client.data as SocketData;
     client.join(lobbyId);
     const lobby = this.lobbyService.getLobby(lobbyId);
