@@ -1,17 +1,24 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
   Lobby,
+  LobbyDto,
   UserDto,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { randomInt } from 'crypto';
 import { LobbyNotFoundException } from '../exceptions/lobby-not-found-exception';
+import { InvalidUpdateException } from '../exceptions/invalid-update-exception';
 
 @Injectable()
 export class LobbyService {
   lobbyContainer: { [lobbyId: string]: Lobby } = {};
 
-  getLobby(lobbyId: string): Lobby | undefined {
-    return this.lobbyContainer[lobbyId];
+  // throws LobbyNotFoundException
+  getLobby(lobbyId: string): Lobby {
+    const lobby = this.lobbyContainer[lobbyId];
+    if (!lobby) {
+      throw new LobbyNotFoundException(lobbyId);
+    }
+    return lobby;
   }
 
   createLobby(user: UserDto): Lobby {
@@ -26,9 +33,6 @@ export class LobbyService {
   // was already there. Throws an exception if the lobby doesn't exist
   addUserToLobby(lobbyId: string, user: UserDto): boolean {
     const lobby = this.getLobby(lobbyId);
-    if (!lobby) {
-      throw new LobbyNotFoundException(lobbyId);
-    }
     if (lobby.users[user.id]) {
       Logger.log(
         `Player [${
@@ -41,6 +45,14 @@ export class LobbyService {
     lobby.turnOrder.push(user.id);
     Logger.log(`Added player [${user.name ?? user.id}] to lobby [${lobbyId}]`);
     return true;
+  }
+
+  updateLobby(lobbyId: string, updatedLobby: Partial<LobbyDto>) {
+    if (updatedLobby.id) {
+      throw new InvalidUpdateException('Cannot update lobby id');
+    }
+    Object.assign(this.getLobby(lobbyId), updatedLobby);
+    Logger.log(`Updating lobby [${lobbyId}] with`, updatedLobby);
   }
 
   private randomLobbyId(): string {

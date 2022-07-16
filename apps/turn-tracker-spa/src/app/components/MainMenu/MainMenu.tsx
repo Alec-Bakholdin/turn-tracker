@@ -18,6 +18,7 @@ export default function MainMenu(): React.ReactElement {
 
   const handleJoinLobby = () => {
     if (lobbyId) {
+      window.scrollTo({ top: 0 });
       navigate(`lobby/${lobbyId}`);
     }
   };

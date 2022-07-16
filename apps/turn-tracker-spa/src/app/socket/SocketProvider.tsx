@@ -38,10 +38,7 @@ export function useSubscription<T>(
 ): void {
   const socket = React.useContext(SocketContext);
   React.useEffect(() => {
-    socket?.on(topic, (msg: string) => {
-      const parsedObj: T = JSON.parse(msg);
-      listener(parsedObj);
-    });
+    socket?.on(topic, listener);
     return () => {
       socket?.off(topic);
     };
