@@ -32,13 +32,16 @@ export function useSocket(): Socket | null {
   return React.useContext(SocketContext);
 }
 
-export function useSubscription(
+export function useSubscription<T>(
   topic: string,
-  listener: (...args: unknown[]) => void
+  listener: (message: T) => void
 ): void {
   const socket = React.useContext(SocketContext);
   React.useEffect(() => {
-    socket?.on(topic, listener);
+    socket?.on(topic, (msg: string) => {
+      const parsedObj: T = JSON.parse(msg);
+      listener(parsedObj);
+    });
     return () => {
       socket?.off(topic);
     };

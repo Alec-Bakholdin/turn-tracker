@@ -1,7 +1,7 @@
 export type ErrorType = 'user' | 'lobby';
 
 export interface ErrorDto {
-  type: ErrorType;
+  type: string;
   message: string;
 }
 

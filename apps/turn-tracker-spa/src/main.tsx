@@ -7,6 +7,7 @@ import { CookiesProvider } from 'react-cookie';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'jotai';
 import theme from './theme';
+import { SnackbarProvider } from 'notistack';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,14 +16,15 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <CookiesProvider>
-      '
       <ThemeProvider theme={theme}>
         <Provider>
           <Router>
-            <QueryClientProvider client={new QueryClient()}>
-              <CssBaseline />
-              <App />
-            </QueryClientProvider>
+            <SnackbarProvider>
+              <QueryClientProvider client={new QueryClient()}>
+                <CssBaseline />
+                <App />
+              </QueryClientProvider>
+            </SnackbarProvider>
           </Router>
         </Provider>
       </ThemeProvider>

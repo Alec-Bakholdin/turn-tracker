@@ -10,11 +10,12 @@ import { LobbyService } from './lobby.service';
 import { SocketData } from '../auth/auth.gateway';
 import {
   ERROR_EVENT_TYPE,
-  ErrorDto,
   LOBBY_UPDATE_EVENT,
   UserDto,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { User } from '../socket-data.decorator';
+import { Logger } from '@nestjs/common';
+import { LobbyNotFoundException } from '../exceptions/lobby-not-found-exception';
 
 @WebSocketGateway({ cors: true })
 export class LobbyGateway implements OnGatewayConnection {
@@ -31,16 +32,18 @@ export class LobbyGateway implements OnGatewayConnection {
 
   handleConnection(client: Socket) {
     if (!client?.data) {
+      Logger.error('Client has null data, unexpectedly');
       return;
     }
     const { user, lobbyId } = client.data as SocketData;
     client.join(lobbyId);
     const lobby = this.lobbyService.getLobby(lobbyId);
+    console.log(lobby, lobbyId);
     if (!lobby) {
-      client.emit(ERROR_EVENT_TYPE, {
-        message: 'Lobby does not exist',
-        type: 'user',
-      } as ErrorDto);
+      client.emit(
+        ERROR_EVENT_TYPE,
+        JSON.stringify(new LobbyNotFoundException(lobbyId).toDto())
+      );
     } else if (this.lobbyService.addUserToLobby(lobbyId, user)) {
       this.server.to(lobbyId).emit(LOBBY_UPDATE_EVENT, lobby);
     }

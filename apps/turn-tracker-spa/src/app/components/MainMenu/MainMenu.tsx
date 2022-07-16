@@ -3,8 +3,11 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 import UsernameEditor from './UsernameEditor';
 import { useNavigate } from 'react-router-dom';
+import useAuthQuery from '../../state/auth';
+import api from '../../api/api';
 
 export default function MainMenu(): React.ReactElement {
+  const { authDto } = useAuthQuery();
   const navigate = useNavigate();
   const [lobbyId, setLobbyId] = useState<string>('');
 
@@ -13,16 +16,24 @@ export default function MainMenu(): React.ReactElement {
     setLobbyId(e.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleJoinLobby = () => {
     if (lobbyId) {
-      navigate(lobbyId);
+      navigate(`lobby/${lobbyId}`);
     }
   };
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleOnKeyDownLobby = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.stopPropagation();
       e.preventDefault();
-      handleSubmit();
+      handleJoinLobby();
+    }
+  };
+  const handleCreateLobby = async () => {
+    if (authDto) {
+      const lobbyResponse = await api.createLobby(authDto.authToken);
+      if (lobbyResponse.status >= 200 && lobbyResponse.status < 300) {
+        navigate(`/lobby/${lobbyResponse.data.id}`);
+      }
     }
   };
 
@@ -39,10 +50,13 @@ export default function MainMenu(): React.ReactElement {
       <TextField
         label={'Lobby ID'}
         onChange={handleOnChange}
-        onKeyDown={handleOnKeyDown}
+        onKeyDown={handleOnKeyDownLobby}
       />
-      <Button className={'w-fit'} onClick={handleSubmit}>
+      <Button className={'w-fit'} onClick={handleJoinLobby}>
         Join Lobby
+      </Button>
+      <Button className={'w-fit'} onClick={handleCreateLobby}>
+        Create Lobby
       </Button>
       <Box flex={3} />
     </Stack>

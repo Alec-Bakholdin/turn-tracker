@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, WsExceptionFilter } from '@nestjs/common';
-import UserException from './UserException';
+import { UserException } from './user-exception';
 import { Socket } from 'socket.io';
 import {
   ERROR_EVENT_TYPE,
@@ -10,9 +10,12 @@ import {
 export class WebsocketUserExceptionFilter
   implements WsExceptionFilter<UserException>
 {
-  catch(exception: UserException, host: ArgumentsHost): any {
+  catch(exception: UserException, host: ArgumentsHost) {
     const socket = host.switchToWs().getClient<Socket>();
-    const errorDto = { message: exception.message, type: 'user' } as ErrorDto;
+    const errorDto = {
+      type: exception.type,
+      message: exception.message,
+    } as ErrorDto;
     socket.emit(ERROR_EVENT_TYPE, errorDto);
   }
 }

@@ -7,6 +7,7 @@ import {
 import { AuthService } from './auth.service';
 import { Socket } from 'socket.io';
 import { UserDto } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
+import { Logger } from '@nestjs/common';
 
 export class SocketData {
   user: UserDto = null;
@@ -25,12 +26,13 @@ export class AuthGateway implements OnGatewayConnection {
   handleConnection(client: Socket) {
     const authToken = client.handshake.headers?.authorization;
     const lobbyIdQuery = client.handshake.query['lobbyId'];
+    const user = this.authService.decodeOrThrow(authToken);
     client.data = {
-      user: this.authService.decodeOrThrow(authToken),
+      user,
       lobbyId: Array.isArray(lobbyIdQuery)
         ? (lobbyIdQuery as string[]).join('')
         : lobbyIdQuery,
     } as SocketData;
-    console.log('User is authenticated: ', client.data);
+    Logger.log(`User [${user.name ?? user.id}] is authenticated`);
   }
 }

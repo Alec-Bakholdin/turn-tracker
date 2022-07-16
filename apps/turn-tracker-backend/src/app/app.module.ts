@@ -7,13 +7,14 @@ import { AuthService } from './auth/auth.service';
 import { AuthGateway } from './auth/auth.gateway';
 import { LobbyGateway } from './lobby/lobby.gateway';
 import { LobbyService } from './lobby/lobby.service';
+import { LobbyController } from './lobby/lobby.controller';
 
 @Module({
   imports: [
     JwtModule.register({ secret: process.env['NX_JWT_SECRET'] }),
     ExceptionsModule,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, LobbyController],
   providers: [
     UserService,
     AuthService,
