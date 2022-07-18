@@ -1,6 +1,7 @@
 import {
   MessageBody,
   OnGatewayConnection,
+  OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -19,7 +20,7 @@ import { Logger } from '@nestjs/common';
 import { LobbyNotFoundException } from '../exceptions/lobby-not-found-exception';
 
 @WebSocketGateway({ cors: true })
-export class LobbyGateway implements OnGatewayConnection {
+export class LobbyGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
@@ -35,15 +36,14 @@ export class LobbyGateway implements OnGatewayConnection {
   }
 
   handleConnection(client: Socket) {
-    if (!client?.data) {
-      Logger.error('Client has null data, unexpectedly');
-      return;
-    }
     const { user, lobbyId } = client.data as SocketData;
     client.join(lobbyId);
-    let lobby: Lobby;
+    Logger.log(`Opening socket for ${user}`);
+
     try {
-      lobby = this.lobbyService.getLobby(lobbyId);
+      const lobby = this.lobbyService.getLobby(lobbyId);
+      this.lobbyService.addUserToLobby(lobbyId, user);
+      this.sendLobbyUpdate(lobby);
     } catch (e) {
       if (e instanceof LobbyNotFoundException) {
         client.emit(ERROR_EVENT_TYPE, e.toDto());
@@ -51,7 +51,29 @@ export class LobbyGateway implements OnGatewayConnection {
         return;
       }
     }
-    this.lobbyService.addUserToLobby(lobbyId, user);
-    this.server.to(lobbyId).emit(LOBBY_UPDATE_EVENT, lobby.toDto());
+  }
+
+  handleDisconnect(client: Socket) {
+    const { user, lobbyId } = client.data as SocketData;
+    client.leave(lobbyId);
+    Logger.log(`Closing socket for ${user}`);
+
+    try {
+      const lobby = this.lobbyService.getLobby(lobbyId);
+      this.lobbyService.removeUserFromLobby(lobbyId, user);
+      this.sendLobbyUpdate(lobby);
+    } catch (e) {
+      if (e instanceof LobbyNotFoundException) {
+        Logger.error(e);
+      }
+    }
+  }
+
+  private sendLobbyUpdate(lobby: Lobby) {
+    this.server.to(lobby.id).emit(LOBBY_UPDATE_EVENT, lobby.toDto());
+  }
+
+  private sendPartialLobbyUpdate(lobby: Partial<LobbyDto>) {
+    this.server.to(lobby.id).emit(LOBBY_UPDATE_EVENT, lobby);
   }
 }

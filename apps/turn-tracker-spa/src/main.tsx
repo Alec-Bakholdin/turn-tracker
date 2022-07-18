@@ -14,20 +14,18 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <CookiesProvider>
-      <ThemeProvider theme={theme}>
-        <Provider>
-          <Router>
-            <SnackbarProvider>
-              <QueryClientProvider client={new QueryClient()}>
-                <CssBaseline />
-                <App />
-              </QueryClientProvider>
-            </SnackbarProvider>
-          </Router>
-        </Provider>
-      </ThemeProvider>
-    </CookiesProvider>
-  </React.StrictMode>
+  <CookiesProvider>
+    <ThemeProvider theme={theme}>
+      <Provider>
+        <Router>
+          <SnackbarProvider>
+            <QueryClientProvider client={new QueryClient()}>
+              <CssBaseline />
+              <App />
+            </QueryClientProvider>
+          </SnackbarProvider>
+        </Router>
+      </Provider>
+    </ThemeProvider>
+  </CookiesProvider>
 );

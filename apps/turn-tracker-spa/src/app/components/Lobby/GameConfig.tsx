@@ -1,10 +1,11 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Button, Paper, Stack } from '@mui/material';
 import { useSocket, useSubscription } from '../../socket/SocketProvider';
 import {
   ERROR_EVENT_TYPE,
   ErrorDto,
   LOBBY_NOT_FOUND_EXCEPTION,
+  LOBBY_START_GAME_EVENT,
   LOBBY_UPDATE_EVENT,
   LobbyDto,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
@@ -13,10 +14,10 @@ import lobbyAtom from '../../state/lobby';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import GameTypeSelector from './GameTypeSelector';
+import PlayerList from './PlayerList/PlayerList';
+import TurnCountSelector from './TurnCountSelector';
 
-export default function GameConfig(props: {
-  lobbyId: string;
-}): React.ReactElement {
+export default function GameConfig(): React.ReactElement {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [lobby, setLobby] = useAtom(lobbyAtom);
@@ -34,19 +35,26 @@ export default function GameConfig(props: {
       navigate('/');
     }
   });
-
-  const onLobbyUpdate = (lobbyUpdate: Partial<LobbyDto>) => {
-    socket?.emit(LOBBY_UPDATE_EVENT, lobbyUpdate);
+  const handleStart = () => {
+    socket?.emit(LOBBY_START_GAME_EVENT);
   };
 
+  const gameConfigProps = {
+    ...lobby,
+    onLobbyUpdate: (lobbyUpdate: Partial<LobbyDto>) => {
+      socket?.emit(LOBBY_UPDATE_EVENT, lobbyUpdate);
+    },
+  };
   return (
-    <Grid container className={'w-full h-full pt-10'} justifyContent={'center'}>
-      <Grid item className={'w-full flex justify-center'}>
-        <GameTypeSelector
-          gameType={lobby.gameType}
-          onLobbyUpdate={onLobbyUpdate}
-        />
-      </Grid>
-    </Grid>
+    <Stack className={'!mt-10 w-1/2 min-w-[400px] items-center'} spacing={2}>
+      <GameTypeSelector {...gameConfigProps} />
+      <PlayerList {...gameConfigProps} />
+      <TurnCountSelector {...gameConfigProps} />
+      <Paper className={'w-1/2 !max-w-[50%]'}>
+        <Button onClick={handleStart} className={'w-full'}>
+          START
+        </Button>
+      </Paper>
+    </Stack>
   );
 }

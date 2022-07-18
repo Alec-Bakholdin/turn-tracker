@@ -12,13 +12,13 @@ export default function Lobby(): React.ReactElement {
   return (
     <SocketProvider
       url={environment.socketBaseUrl}
-      open={isSuccess}
+      open={isSuccess && Boolean(lobbyId)}
       opts={{
         extraHeaders: { authorization: data?.authToken ?? '' },
         query: { lobbyId },
       }}
     >
-      {lobbyId && <GameConfig lobbyId={lobbyId} />}
+      <GameConfig />
     </SocketProvider>
   );
 }

@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import {
   AuthDto,
   LobbyDto,
-  UserDto,
+  User,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { environment } from '../../environments/environment';
 
@@ -14,7 +14,7 @@ const authConfig = (authToken?: string): AxiosRequestConfig =>
 export const api = {
   login: async (authToken?: string) =>
     axiosInstance.post<AuthDto>('/auth/login', null, authConfig(authToken)),
-  newToken: async (userDto: Partial<UserDto>, authToken: string) =>
+  newToken: async (userDto: Partial<User>, authToken: string) =>
     axiosInstance.post<AuthDto>(
       '/auth/newToken',
       userDto,

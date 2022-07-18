@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import {
   Lobby,
   LobbyDto,
-  UserDto,
+  User,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { randomInt } from 'crypto';
 import { LobbyNotFoundException } from '../exceptions/lobby-not-found-exception';
@@ -21,38 +21,55 @@ export class LobbyService {
     return lobby;
   }
 
-  createLobby(user: UserDto): Lobby {
+  createLobby(user: User): Lobby {
     const lobby = new Lobby(this.randomLobbyId());
     this.lobbyContainer[lobby.id] = lobby;
-    Logger.log(`Created new lobby ${lobby.id}`);
+    Logger.log(`Created new lobby ${lobby}`);
     this.addUserToLobby(lobby.id, user);
     return lobby;
   }
 
   // returns true if the user was added, false if the user
   // was already there. Throws an exception if the lobby doesn't exist
-  addUserToLobby(lobbyId: string, user: UserDto): boolean {
+  addUserToLobby(lobbyId: string, user: User) {
     const lobby = this.getLobby(lobbyId);
     if (lobby.users[user.id]) {
-      Logger.log(
-        `Player [${
-          user.name ?? user.id
-        }] was already part of lobby [${lobbyId}]`
-      );
-      return false;
+      Logger.log(`Player ${user} was already part of lobby ${lobby}`);
     }
     lobby.users[user.id] = user;
-    lobby.turnOrder.push(user.id);
-    Logger.log(`Added player [${user.name ?? user.id}] to lobby [${lobbyId}]`);
-    return true;
+    if (!lobby.turnOrder.includes(user.id)) {
+      lobby.turnOrder.push(user.id);
+      Logger.log(`Added player ${user} to lobby ${lobby}`);
+    }
+  }
+
+  removeUserFromLobby(lobbyId: string, user: User): Lobby {
+    const lobby = this.getLobby(lobbyId);
+    if (!lobby.users[user.id]) {
+      return;
+    }
+    delete lobby.users[user.id];
+    if (lobby.turnOrder.includes(user.id)) {
+      lobby.turnOrder = lobby.turnOrder.splice(
+        lobby.turnOrder.indexOf(user.id),
+        1
+      );
+    }
+  }
+
+  removeLobby(lobbyId: string) {
+    if (this.lobbyContainer[lobbyId]) {
+      delete this.lobbyContainer[lobbyId];
+    }
   }
 
   updateLobby(lobbyId: string, updatedLobby: Partial<LobbyDto>) {
     if (updatedLobby.id) {
       throw new InvalidUpdateException('Cannot update lobby id');
     }
-    Object.assign(this.getLobby(lobbyId), updatedLobby);
-    Logger.log(`Updating lobby [${lobbyId}] with`, updatedLobby);
+    const lobby = this.getLobby(lobbyId);
+    Object.assign(lobby, updatedLobby);
+    Logger.log(`Updating lobby ${lobby} with`, updatedLobby);
   }
 
   private randomLobbyId(): string {

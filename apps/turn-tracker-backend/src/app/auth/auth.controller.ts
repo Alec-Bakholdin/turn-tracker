@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { AuthService } from './auth.service';
 import {
   AuthDto,
-  UserDto,
+  User,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 
 @Controller('auth')
@@ -17,7 +17,7 @@ export class AuthController {
   }
 
   @Post('newToken')
-  newToken(@Req() request: Request, @Body() body: Partial<UserDto>): AuthDto {
+  newToken(@Req() request: Request, @Body() body: Partial<User>): AuthDto {
     const authToken = request.headers.authorization;
     return this.authService.newToken(body, authToken);
   }

@@ -6,11 +6,11 @@ import {
 } from '@nestjs/websockets';
 import { AuthService } from './auth.service';
 import { Socket } from 'socket.io';
-import { UserDto } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
+import { User } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { Logger } from '@nestjs/common';
 
 export class SocketData {
-  user: UserDto = null;
+  user: User = null;
   lobbyId: string = null;
 }
 
@@ -26,13 +26,13 @@ export class AuthGateway implements OnGatewayConnection {
   handleConnection(client: Socket) {
     const authToken = client.handshake.headers?.authorization;
     const lobbyIdQuery = client.handshake.query['lobbyId'];
-    const user = this.authService.decodeOrThrow(authToken);
+    const user: User = this.authService.decodeOrThrow(authToken);
     client.data = {
       user,
       lobbyId: Array.isArray(lobbyIdQuery)
         ? (lobbyIdQuery as string[]).join('')
         : lobbyIdQuery,
     } as SocketData;
-    Logger.log(`User [${user.name ?? user.id}] is authenticated`);
+    Logger.log(`User ${user} is authenticated`);
   }
 }

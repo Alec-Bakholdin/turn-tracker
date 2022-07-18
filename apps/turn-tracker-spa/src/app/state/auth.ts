@@ -3,14 +3,12 @@ import { useQuery } from 'react-query';
 import api from '../api/api';
 import {
   AuthDto,
-  UserDto,
+  User,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { useEffect, useState } from 'react';
 
 export default function useAuthQuery() {
-  const [updatedUser, setUpdatedUser] = useState<
-    Partial<UserDto> | undefined
-  >();
+  const [updatedUser, setUpdatedUser] = useState<Partial<User> | undefined>();
   const [cookies, setCookie] = useCookies(['Authorization']);
 
   const saveAuthDto = (authDto: AuthDto) => {
@@ -44,7 +42,7 @@ export default function useAuthQuery() {
     }
   }, [updatedUser]);
 
-  const updateUserDto = (userDto: Partial<UserDto>) => {
+  const updateUserDto = (userDto: Partial<User>) => {
     setUpdatedUser(userDto);
   };
 

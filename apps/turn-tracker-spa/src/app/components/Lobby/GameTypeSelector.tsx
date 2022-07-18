@@ -8,6 +8,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   SelectChangeEvent,
   Typography,
@@ -26,22 +27,24 @@ export default function GameTypeSelector(props: {
   };
 
   return (
-    <FormControl>
-      <InputLabel id={'game-type-selector-label'}>Game Type</InputLabel>
-      <Select
-        labelId={'game-type-selector-label'}
-        id={'game-type-selector'}
-        value={props.gameType ?? gameTypes[0]}
-        onChange={handleOnChange}
-        label={'Game Type'}
-        className={'max-w-80 w-full'}
-      >
-        {gameTypes.map((gameType) => (
-          <MenuItem key={gameType} value={gameType}>
-            <Typography textOverflow={'ellipsis'}>{gameType}</Typography>
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <Paper className={'w-1/2 !min-w-[300px]'}>
+      <FormControl className={'w-full'}>
+        <InputLabel id={'game-type-selector-label'}>Game Type</InputLabel>
+        <Select
+          labelId={'game-type-selector-label'}
+          id={'game-type-selector'}
+          value={props.gameType ?? gameTypes[0]}
+          onChange={handleOnChange}
+          label={'Game Type'}
+          className={'w-full'}
+        >
+          {gameTypes.map((gameType) => (
+            <MenuItem key={gameType} value={gameType}>
+              <Typography textOverflow={'ellipsis'}>{gameType}</Typography>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Paper>
   );
 }

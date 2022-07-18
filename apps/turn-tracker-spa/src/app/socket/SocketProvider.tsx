@@ -16,6 +16,7 @@ export default function SocketProvider(props: {
   const [socket, setSocket] = React.useState<Socket | null>(null);
   React.useEffect(() => {
     if (props.open === true || props.open === undefined) {
+      console.log('Opening socket');
       setSocket(SocketClient(props.url, props.opts));
     } else {
       setSocket(null);
