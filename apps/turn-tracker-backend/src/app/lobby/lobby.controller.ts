@@ -14,7 +14,7 @@ export class LobbyController {
   @Post('create')
   createLobby(@Req() request: Request): LobbyDto {
     const authToken = request.headers.authorization;
-    const user = this.authService.decodeOrThrow(authToken);
-    return this.lobbyService.createLobby(user).toDto();
+    this.authService.decodeOrThrow(authToken);
+    return this.lobbyService.createLobby().toDto();
   }
 }

@@ -21,11 +21,10 @@ export class LobbyService {
     return lobby;
   }
 
-  createLobby(user: User): Lobby {
+  createLobby(): Lobby {
     const lobby = new Lobby(this.randomLobbyId());
     this.lobbyContainer[lobby.id] = lobby;
     Logger.log(`Created new lobby ${lobby}`);
-    this.addUserToLobby(lobby.id, user);
     return lobby;
   }
 

@@ -15,13 +15,25 @@ export default function SocketProvider(props: {
 }): React.ReactElement {
   const [socket, setSocket] = React.useState<Socket | null>(null);
   React.useEffect(() => {
-    if (props.open === true || props.open === undefined) {
-      console.log('Opening socket');
+    const disconnect = () => {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
+    };
+    const connect = () => {
+      if (socket) {
+        disconnect();
+      }
       setSocket(SocketClient(props.url, props.opts));
-    } else {
-      setSocket(null);
+    };
+    if (props.open === true) {
+      connect();
+    } else if (props.open === false && socket) {
+      disconnect();
     }
-  }, [props.open, props.url, props.opts]);
+    return disconnect;
+  }, [props.open]);
   return (
     <SocketContext.Provider value={socket}>
       {props.children}
