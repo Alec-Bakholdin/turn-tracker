@@ -7,6 +7,7 @@ export class LobbyDto {
   id?: string;
   users: { [id: string]: User } = {};
   userOrder: string[] = [];
+  status: LobbyStatus = 'setup';
 
   gameType: GameType = gameTypes[0];
   gameConfig: GameConfigDto = new GameConfigDto();

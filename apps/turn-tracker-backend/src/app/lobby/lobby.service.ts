@@ -72,6 +72,12 @@ export class LobbyService {
       lobby.game = GameFactory.getGame(updatedLobby.gameType);
       updatedLobby.gameConfig = lobby.game.getDefaultConfig();
     }
+    if (updatedLobby.gameConfig) {
+      updatedLobby.gameConfig = lobby.game.updateConfig(
+        lobby.gameConfig,
+        updatedLobby.gameConfig
+      );
+    }
     Object.assign(lobby, updatedLobby);
     Logger.log(`Updating lobby ${lobby} with`, updatedLobby);
   }
