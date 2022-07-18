@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
-  gameTypeConfig,
+  GameConfigDto,
   LobbyDto,
   User,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { Box, Typography } from '@mui/material';
 import DraggableList from './DraggableList';
-import { useAtom } from 'jotai';
-import lobbyAtom from '../../../state/lobby';
 import { DragHandleRounded } from '@mui/icons-material';
 import GameConfigSection from '../GameConfigSection';
 
@@ -40,30 +38,30 @@ function PlayerListNode({
 }
 
 export default function PlayerList(props: {
-  turnOrder: string[];
+  userOrder: string[];
   users: { [id: string]: User };
+  gameConfig: GameConfigDto;
   onLobbyUpdate?: (lobbyUpdate: Partial<LobbyDto>) => void;
 }): React.ReactElement {
-  const [{ gameType }] = useAtom(lobbyAtom);
-  const [userIds, setUserIds] = useState(props.turnOrder);
+  const [userIds, setUserIds] = useState(props.userOrder);
   useEffect(() => {
-    setUserIds(props.turnOrder);
-  }, [props.turnOrder]);
-  const turnOrderMatters = gameTypeConfig[gameType]?.turnOrderMatters;
+    setUserIds(props.userOrder);
+  }, [props.userOrder]);
+  const { userOrderMatters } = props.gameConfig;
 
   const renderPlayerNode = (id: string) => (
-    <PlayerListNode user={props.users[id]} dragHandle={turnOrderMatters} />
+    <PlayerListNode user={props.users[id]} dragHandle={userOrderMatters} />
   );
 
   const onUpdateList = (newList: string[]) => {
     setUserIds(newList);
     if (props.onLobbyUpdate) {
-      props.onLobbyUpdate({ turnOrder: newList });
+      props.onLobbyUpdate({ userOrder: newList });
     }
   };
 
   return (
-    <GameConfigSection title={turnOrderMatters ? 'Player Order' : 'Players'}>
+    <GameConfigSection title={userOrderMatters ? 'Player Order' : 'Players'}>
       <DraggableList
         itemIdList={userIds}
         renderItem={renderPlayerNode}

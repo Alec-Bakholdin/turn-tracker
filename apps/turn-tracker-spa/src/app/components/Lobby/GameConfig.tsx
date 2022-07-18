@@ -49,7 +49,9 @@ export default function GameConfig(): React.ReactElement {
     <Stack className={'!mt-10 w-1/2 min-w-[400px] items-center'} spacing={2}>
       <GameTypeSelector {...gameConfigProps} />
       <PlayerList {...gameConfigProps} />
-      <TurnCountSelector {...gameConfigProps} />
+      {lobby.gameConfig.editableTurns && (
+        <TurnCountSelector {...gameConfigProps} />
+      )}
       <Paper className={'w-1/2 !max-w-[50%]'}>
         <Button onClick={handleStart} className={'w-full'}>
           START

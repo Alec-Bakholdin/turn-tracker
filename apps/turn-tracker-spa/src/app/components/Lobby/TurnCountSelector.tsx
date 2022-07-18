@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { UpdateLobbyAction } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
+import React, { useEffect, useState } from 'react';
+import {
+  GameConfigDto,
+  UpdateLobbyAction,
+} from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import GameConfigSection from './GameConfigSection';
 import {
   FormControl,
@@ -12,18 +15,50 @@ import {
 } from '@mui/material';
 
 export default function TurnCountSelector(props: {
-  onLobbyUpdate: UpdateLobbyAction;
+  gameConfig: GameConfigDto;
+  onLobbyUpdate?: UpdateLobbyAction;
 }): React.ReactElement {
+  const { gameConfig } = props;
   const [isInfinite, setIsInfinite] = useState<boolean>(false);
-  const [numTurns, setNumTurns] = useState<number | null>(null);
+  const [numTurns, setNumTurns] = useState<number | undefined>(
+    gameConfig.numTurns
+  );
+  useEffect(() => {
+    setNumTurns(gameConfig.numTurns);
+  }, [gameConfig.numTurns]);
+  useEffect(() => {
+    setIsInfinite(gameConfig.isInfiniteTurns);
+  }, [gameConfig.isInfiniteTurns]);
+
   const handleIsInfiniteChange = (e: SelectChangeEvent) => {
-    setIsInfinite(e.target.value === 'infinite');
+    const newIsInfinite = e.target.value === 'infinite';
+    setIsInfinite(newIsInfinite);
+    if (props.onLobbyUpdate) {
+      props.onLobbyUpdate({
+        gameConfig: {
+          ...gameConfig,
+          isInfiniteTurns: newIsInfinite,
+        },
+      });
+    }
   };
 
-  const handleNumTurnsChange = (e: SelectChangeEvent) => {
+  const handleNumTurnsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const num = parseInt(e.target.value);
-    if (num > 0) {
+    let numToSend: number = num;
+    if (isNaN(num)) {
+      setNumTurns(undefined);
+      numToSend = 0;
+    } else if (num > 0) {
       setNumTurns(num);
+    }
+    if (props.onLobbyUpdate) {
+      props.onLobbyUpdate({
+        gameConfig: {
+          ...gameConfig,
+          numTurns: numToSend,
+        },
+      });
     }
   };
 
@@ -53,6 +88,7 @@ export default function TurnCountSelector(props: {
             label={'Number of Turns'}
             type={'number'}
             value={numTurns ?? ''}
+            onChange={handleNumTurnsChange}
             fullWidth
           />
         )}

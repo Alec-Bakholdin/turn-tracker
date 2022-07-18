@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
+  GameFactory,
   Lobby,
   LobbyDto,
   User,
@@ -36,8 +37,8 @@ export class LobbyService {
       Logger.log(`Player ${user} was already part of lobby ${lobby}`);
     }
     lobby.users[user.id] = user;
-    if (!lobby.turnOrder.includes(user.id)) {
-      lobby.turnOrder.push(user.id);
+    if (!lobby.userOrder.includes(user.id)) {
+      lobby.userOrder.push(user.id);
       Logger.log(`Added player ${user} to lobby ${lobby}`);
     }
   }
@@ -48,9 +49,9 @@ export class LobbyService {
       return;
     }
     delete lobby.users[user.id];
-    if (lobby.turnOrder.includes(user.id)) {
-      lobby.turnOrder = lobby.turnOrder.splice(
-        lobby.turnOrder.indexOf(user.id),
+    if (lobby.userOrder.includes(user.id)) {
+      lobby.userOrder = lobby.userOrder.splice(
+        lobby.userOrder.indexOf(user.id),
         1
       );
     }
@@ -67,6 +68,10 @@ export class LobbyService {
       throw new InvalidUpdateException('Cannot update lobby id');
     }
     const lobby = this.getLobby(lobbyId);
+    if (updatedLobby.gameType) {
+      lobby.game = GameFactory.getGame(updatedLobby.gameType);
+      updatedLobby.gameConfig = lobby.game.getDefaultConfig();
+    }
     Object.assign(lobby, updatedLobby);
     Logger.log(`Updating lobby ${lobby} with`, updatedLobby);
   }

@@ -1,48 +1,24 @@
 import { User } from './user';
+import { Game, GameConfigDto, GameFactory, GameType, gameTypes } from './game';
 
 export type LobbyStatus = 'setup' | 'inProgress';
-export const gameTypes: GameType[] = [
-  'Turn Based',
-  'Phase Based',
-  'Seven Wonders',
-];
-export type GameType =
-  | 'Turn Based'
-  | 'Phase Based'
-  | 'Seven Wonders'
-  | 'Nemesis'
-  | 'Sidereal Confluence';
-
-export const gameTypeConfig: {
-  [gameType in GameType]: { turnOrderMatters: boolean };
-} = {
-  'Phase Based': {
-    turnOrderMatters: false,
-  },
-  'Turn Based': {
-    turnOrderMatters: true,
-  },
-  Nemesis: {
-    turnOrderMatters: true,
-  },
-  'Seven Wonders': { turnOrderMatters: false },
-  'Sidereal Confluence': { turnOrderMatters: false },
-};
 
 export class LobbyDto {
   id?: string;
   users: { [id: string]: User } = {};
-  phaseList: string[] = [];
-  numTurns = 0;
-  gameType: GameType = gameTypes[0]; // the type of game that will be played
-  turnOrder: string[] = []; // list of user ids in turn order
-  currentUser?: string; // id of the user whose turn it is
-  status: LobbyStatus = 'setup'; // determines if in game or not
+  userOrder: string[] = [];
+
+  gameType: GameType = gameTypes[0];
+  gameConfig: GameConfigDto = new GameConfigDto();
+  activeUsers: Set<string> = new Set();
+  waitingUsers: Set<string> = new Set();
 }
 
 export class Lobby extends LobbyDto {
+  game: Game = GameFactory.getGame(gameTypes[0]);
   constructor(public override readonly id: string) {
     super();
+    this.gameConfig = this.game.getDefaultConfig();
   }
 
   toDto(): LobbyDto {
