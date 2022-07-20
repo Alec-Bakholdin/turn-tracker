@@ -15,6 +15,7 @@ import lobbyAtom from '../../state/lobby';
 import { useSnackbar } from 'notistack';
 import GameConfig from './GameConfig/GameConfig';
 import Game from './Game/Game';
+import { Box } from '@mui/material';
 
 function LobbyComponent(): React.ReactElement {
   const { enqueueSnackbar } = useSnackbar();
@@ -34,10 +35,10 @@ function LobbyComponent(): React.ReactElement {
     }
   });
   return (
-    <>
+    <Box className={'w-full h-full flex justify-center mb-20'}>
       {lobby.status === 'setup' && <GameConfig />}
       {lobby.status === 'inProgress' && <Game />}
-    </>
+    </Box>
   );
 }
 

@@ -1,13 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import {
-  GameFactory,
+  gameTypes,
   Lobby,
   LobbyDto,
   User,
+  USER_NOT_FOUND_EXCEPTION,
+  UserException,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import { randomInt } from 'crypto';
 import { LobbyNotFoundException } from '../exceptions/lobby-not-found-exception';
 import { InvalidUpdateException } from '../exceptions/invalid-update-exception';
+import { GameFactory } from './game/game-factory';
 
 @Injectable()
 export class LobbyService {
@@ -24,6 +27,8 @@ export class LobbyService {
 
   createLobby(): Lobby {
     const lobby = new Lobby(this.randomLobbyId());
+    lobby.game = GameFactory.getGame(lobby, gameTypes[0]);
+    lobby.gameConfig = lobby.game.getDefaultConfig();
     this.lobbyContainer[lobby.id] = lobby;
     Logger.log(`Created new lobby ${lobby}`);
     return lobby;
@@ -69,17 +74,35 @@ export class LobbyService {
     }
     const lobby = this.getLobby(lobbyId);
     if (updatedLobby.gameType) {
-      lobby.game = GameFactory.getGame(updatedLobby.gameType);
+      lobby.game = GameFactory.getGame(lobby, updatedLobby.gameType);
       updatedLobby.gameConfig = lobby.game.getDefaultConfig();
-    }
-    if (updatedLobby.gameConfig) {
+    } else if (updatedLobby.gameConfig) {
       updatedLobby.gameConfig = lobby.game.updateConfig(
-        lobby.gameConfig,
         updatedLobby.gameConfig
       );
     }
     Object.assign(lobby, updatedLobby);
     Logger.log(`Updating lobby ${lobby} with`, updatedLobby);
+  }
+
+  startGame(lobbyId: string): Lobby {
+    const lobby = this.getLobby(lobbyId);
+    lobby.game.start();
+    Logger.log(`Started game ${lobby}`);
+    return lobby;
+  }
+
+  playerReady(lobbyId: string, userId: string): Partial<LobbyDto> {
+    const lobby = this.getLobby(lobbyId);
+    const user = lobby.users[userId];
+    if (!lobby.users[userId]) {
+      throw new UserException(
+        USER_NOT_FOUND_EXCEPTION,
+        `User is not part of lobby ${lobby}`
+      );
+    }
+    Logger.log(`User ${user} is ready`);
+    return lobby.game.playerReady(userId);
   }
 
   private randomLobbyId(): string {

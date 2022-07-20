@@ -1,5 +1,7 @@
-import { Game } from './game';
-import { GameConfigDto } from './game-config';
+import {
+  Game,
+  GameConfigDto,
+} from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 
 export class PhaseBasedGame extends Game {
   getDefaultConfig(): GameConfigDto {

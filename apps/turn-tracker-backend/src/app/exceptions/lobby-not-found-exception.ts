@@ -1,5 +1,7 @@
-import { UserException } from './user-exception';
-import { LOBBY_NOT_FOUND_EXCEPTION } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
+import {
+  LOBBY_NOT_FOUND_EXCEPTION,
+  UserException,
+} from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 
 export class LobbyNotFoundException extends UserException {
   constructor(lobbyId: string) {

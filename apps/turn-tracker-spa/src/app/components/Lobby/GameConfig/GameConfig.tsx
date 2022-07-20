@@ -27,7 +27,10 @@ export default function GameConfig(): React.ReactElement {
     },
   };
   return (
-    <Stack className={'!mt-10 w-1/2 min-w-[400px] items-center'} spacing={2}>
+    <Stack
+      className={'!mt-10 !h-fit w-1/2 min-w-[400px] items-center'}
+      spacing={2}
+    >
       <GameTypeSelector {...gameConfigProps} />
       <PlayerList {...gameConfigProps} />
       {lobby.gameConfig.editableTurns && (

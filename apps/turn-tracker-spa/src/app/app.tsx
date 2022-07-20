@@ -7,8 +7,8 @@ import NoRouteMatch from './components/NoRouteMatch';
 
 function App() {
   return (
-    <Box className={'w-full h-full'}>
-      <Box className={'pb-10 w-full flex justify-center'}>
+    <Box className={'w-full'}>
+      <Box className={'w-full pb-10 flex justify-center'}>
         <Routes>
           <Route path={'/'} element={<MainMenu />} />
           <Route path={'/lobby/:lobbyId'} element={<Lobby />} />

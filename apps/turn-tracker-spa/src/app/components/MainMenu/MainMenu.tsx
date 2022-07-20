@@ -39,7 +39,11 @@ export default function MainMenu(): React.ReactElement {
   };
 
   return (
-    <Stack className={'w-1/2 max-w-md mt-5'} spacing={4} alignItems={'center'}>
+    <Stack
+      className={'pb-10 w-1/2 h-fit max-w-md mt-5'}
+      spacing={4}
+      alignItems={'center'}
+    >
       <Stack width={'100%'} direction={'row'} justifyContent={'space-between'}>
         <UsernameEditor />
         <Settings />

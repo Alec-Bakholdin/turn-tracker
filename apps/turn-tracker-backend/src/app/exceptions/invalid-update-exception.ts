@@ -1,5 +1,7 @@
-import { UserException } from './user-exception';
-import { LOBBY_INVALID_UPDATE_EXCEPTION } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
+import {
+  LOBBY_INVALID_UPDATE_EXCEPTION,
+  UserException,
+} from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 
 export class InvalidUpdateException extends UserException {
   constructor(message: string) {

@@ -1,9 +1,14 @@
-import { ArgumentsHost, Catch, WsExceptionFilter } from '@nestjs/common';
-import { UserException } from './user-exception';
+import {
+  ArgumentsHost,
+  Catch,
+  Logger,
+  WsExceptionFilter,
+} from '@nestjs/common';
 import { Socket } from 'socket.io';
 import {
   ERROR_EVENT_TYPE,
   ErrorDto,
+  UserException,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 
 @Catch(UserException)
@@ -16,6 +21,7 @@ export class WebsocketUserExceptionFilter
       type: exception.type,
       message: exception.message,
     } as ErrorDto;
+    Logger.log('got here');
     socket.emit(ERROR_EVENT_TYPE, errorDto);
   }
 }

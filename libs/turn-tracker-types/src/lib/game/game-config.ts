@@ -7,4 +7,4 @@ export class GameConfigDto {
   numTurns?: number;
 }
 
-export const UPDATE_GAME_CONFIG_EVENT = 'updateGameConfig';
+export const INVALID_CONFIG_EXCEPTION = 'InvalidConfigException';
