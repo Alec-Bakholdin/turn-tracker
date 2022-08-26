@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { Settings } from '@mui/icons-material';
+import React, {useState} from 'react';
+import {Box, Button, Stack, TextField, Typography} from '@mui/material';
+import {Settings} from '@mui/icons-material';
 import UsernameEditor from './UsernameEditor';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import useAuthQuery from '../../state/auth';
 import api from '../../api/api';
 
 export default function MainMenu(): React.ReactElement {
-  const { authDto } = useAuthQuery();
+  const {authDto} = useAuthQuery();
   const navigate = useNavigate();
   const [lobbyId, setLobbyId] = useState<string>('');
 
@@ -18,8 +18,11 @@ export default function MainMenu(): React.ReactElement {
 
   const handleJoinLobby = () => {
     if (lobbyId) {
-      window.scrollTo({ top: 0 });
-      navigate(`lobby/${lobbyId}`);
+      window.scrollTo({top: 0});
+      navigate({
+        pathname: '',
+        search: `?lobby=${lobbyId}`
+      });
     }
   };
   const handleOnKeyDownLobby = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -33,7 +36,10 @@ export default function MainMenu(): React.ReactElement {
     if (authDto) {
       const lobbyResponse = await api.createLobby(authDto.authToken);
       if (lobbyResponse.status >= 200 && lobbyResponse.status < 300) {
-        navigate(`/lobby/${lobbyResponse.data.id}`);
+        navigate({
+          pathname: '',
+          search: `?lobby=${lobbyResponse.data.id}`
+        });
       }
     }
   };

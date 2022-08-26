@@ -1,8 +1,8 @@
 import React from 'react';
-import SocketProvider, { useSubscription } from '../../socket/SocketProvider';
+import SocketProvider, {useSubscription} from '../../socket/SocketProvider';
 import useAuthQuery from '../../state/auth';
-import { useNavigate, useParams } from 'react-router-dom';
-import { environment } from '../../../environments/environment';
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import {environment} from '../../../environments/environment';
 import {
   ERROR_EVENT_TYPE,
   ErrorDto,
@@ -10,12 +10,12 @@ import {
   LOBBY_UPDATE_EVENT,
   LobbyDto,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
-import { useAtom } from 'jotai';
+import {useAtom} from 'jotai';
 import lobbyAtom from '../../state/lobby';
-import { useSnackbar } from 'notistack';
+import {useSnackbar} from 'notistack';
 import GameConfig from './GameConfig/GameConfig';
 import Game from './Game/Game';
-import { Box } from '@mui/material';
+import {Box} from '@mui/material';
 
 function LobbyComponent(): React.ReactElement {
   const { enqueueSnackbar } = useSnackbar();
@@ -43,16 +43,17 @@ function LobbyComponent(): React.ReactElement {
 }
 
 export default function Lobby(): React.ReactElement {
-  const { isSuccess, data } = useAuthQuery();
-  const { lobbyId } = useParams();
+  const {isSuccess, data} = useAuthQuery();
+  const [searchParams] = useSearchParams();
+  const lobbyId = searchParams.get("lobby");
 
   return (
     <SocketProvider
       url={environment.socketBaseUrl}
       open={isSuccess && Boolean(lobbyId)}
       opts={{
-        extraHeaders: { authorization: data?.authToken ?? '' },
-        query: { lobbyId },
+        extraHeaders: {authorization: data?.authToken ?? ''},
+        query: {lobbyId},
       }}
     >
       <LobbyComponent />
