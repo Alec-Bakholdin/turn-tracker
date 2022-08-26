@@ -1,0 +1,21 @@
+name: Deploy to DockerHub
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - run: docker login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASWORD: ${{secrets.DOCKER_PASSWORD}}
+    - run: yarn install
+    - run: yarn nx run turn-tracker-backend:build:production
+    - run: docker build . --file ./apps/turn-tracker-backend/Dockerfile --tag turn-tracker-backend:$(date +%s)
+    - run: docker push ${{secrets.DOCKER_USER}}/bakholdin-home-server
