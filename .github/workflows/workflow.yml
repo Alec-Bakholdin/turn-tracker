@@ -17,5 +17,5 @@ jobs:
         DOCKER_PASWORD: ${{secrets.DOCKER_PASSWORD}}
     - run: yarn install
     - run: yarn nx run turn-tracker-backend:build:production
-    - run: docker build . --file ./apps/turn-tracker-backend/Dockerfile --tag ${{secrets.DOCKER_USER}}/bakholdin-home-server:turn-tracker-backend-$(date +%s)
-    - run: docker push ${{secrets.DOCKER_USER}}/bakholdin-home-server:turn-tracker-backend
+    - run: docker build . --file ./apps/turn-tracker-backend/Dockerfile --tag ${{secrets.DOCKER_USER}}/${{secrets.DOCKER_REPO}}:turn-tracker-backend-$(date +%s)
+    - run: docker push ${{secrets.DOCKER_USER}}/${{secrets.DOCKER_REPO}}
