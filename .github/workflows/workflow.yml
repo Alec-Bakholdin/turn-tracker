@@ -18,5 +18,6 @@ jobs:
       - run: yarn install
       - run: yarn nx run turn-tracker-backend:build:production
       - run: export TAG_ID=$(date + %s)
-      - run: docker build . --file ./apps/turn-tracker-backend/Dockerfile --tag ${{secrets.DOCKER_USER}}/turn-tracker-backend:$(date +%s)
-      - run: docker push ${{secrets.DOCKER_USER}}/turn-tracker-backend:$(docker image ls | grep turn-tracker-backend | head -n 1 | awk '{print $2}')
+      - run: docker build . --file ./apps/turn-tracker-backend/Dockerfile --tag ${{secrets.DOCKER_USER}}/turn-tracker-backend
+      - run: docker tag ${{secrets.DOCKER_USER}}/turn-tracker-backend:latest ${{secrets.DOCKER_USER}}/turn-tracker-backend:$(date +%s)
+      - run: docker push ${{secrets.DOCKER_USER}}/turn-tracker-backend -a
