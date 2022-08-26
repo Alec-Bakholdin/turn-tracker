@@ -14,7 +14,7 @@ jobs:
       - run: docker login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
-          DOCKER_PASWORD: ${{secrets.DOCKER_PASSWORD}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
       - run: yarn install
       - run: yarn nx run turn-tracker-backend:build:production
       - run: export TAG_ID=$(date + %s)
