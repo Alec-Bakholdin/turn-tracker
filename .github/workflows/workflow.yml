@@ -17,8 +17,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - run: yarn install
-      - run: yarn nx run turn-tracker-backend:build:production
+      - run: ls
+      #- run: yarn install
+      #- run: yarn nx run turn-tracker-backend:build:production
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
