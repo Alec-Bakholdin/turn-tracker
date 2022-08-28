@@ -11,7 +11,7 @@
         "compiler": "babel",
         "outputPath": "dist/apps/turn-tracker-spa",
         "index": "apps/turn-tracker-spa/src/index.html",
-        "baseHref": "/",
+        "baseHref": "/turn-tracker/",
         "main": "apps/turn-tracker-spa/src/main.tsx",
         "polyfills": "apps/turn-tracker-spa/src/polyfills.ts",
         "tsConfig": "apps/turn-tracker-spa/tsconfig.app.json",
@@ -19,7 +19,9 @@
           "apps/turn-tracker-spa/src/favicon.ico",
           "apps/turn-tracker-spa/src/assets"
         ],
-        "styles": ["apps/turn-tracker-spa/src/styles.scss"],
+        "styles": [
+          "apps/turn-tracker-spa/src/styles.scss"
+        ],
         "scripts": [],
         "webpackConfig": "@nrwl/react/plugins/webpack"
       },
