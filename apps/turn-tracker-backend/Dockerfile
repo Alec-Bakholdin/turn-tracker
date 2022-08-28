@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:16-alpine
 EXPOSE 3333
 WORKDIR /app
 COPY ./dist/apps/turn-tracker-backend .
