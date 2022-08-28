@@ -1,5 +1,7 @@
 export const environment = {
-  socketBaseUrl: 'https://bakholdin.hopto.org/turn-tracker',
+  socketUrl: 'https://bakholdin.hopto.org/turn-tracker/socket',
+  socketPath: '/turn-tracker/socket',
+
   apiBaseUrl: 'https://bakholdin.hopto.org/turn-tracker/api',
   production: true,
 };

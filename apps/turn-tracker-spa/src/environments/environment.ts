@@ -2,7 +2,9 @@
 // When building for production, this file is replaced with `environment.prod.ts`.
 
 export const environment = {
-  socketBaseUrl: 'http://localhost:3333',
-  apiBaseUrl: 'http://localhost:3333/api',
+  socketUrl: 'http://localhost:3333/turn-tracker/socket',
+  socketPath: '/turn-tracker/socket',
+
+  apiBaseUrl: 'http://localhost:3333/turn-tracker/api',
   production: false,
 };

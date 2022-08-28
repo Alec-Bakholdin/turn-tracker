@@ -49,14 +49,15 @@ export default function Lobby(): React.ReactElement {
 
   return (
     <SocketProvider
-      url={environment.socketBaseUrl}
+      url={environment.socketUrl}
+      path={environment.socketPath}
       open={isSuccess && Boolean(lobbyId)}
       opts={{
         extraHeaders: {authorization: data?.authToken ?? ''},
         query: {lobbyId},
       }}
     >
-      <LobbyComponent />
+      <LobbyComponent/>
     </SocketProvider>
   );
 }

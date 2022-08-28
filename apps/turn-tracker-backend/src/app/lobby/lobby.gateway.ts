@@ -6,9 +6,9 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
-import { LobbyService } from './lobby.service';
-import { SocketData } from '../auth/auth.gateway';
+import {Server, Socket} from 'socket.io';
+import {LobbyService} from './lobby.service';
+import {SocketData} from '../auth/auth.gateway';
 import {
   ERROR_EVENT_TYPE,
   Lobby,
@@ -18,18 +18,19 @@ import {
   LobbyDto,
   UserDto,
 } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
-import { LobbyId, User } from '../socket-data.decorator';
-import { Logger, UseFilters } from '@nestjs/common';
-import { LobbyNotFoundException } from '../exceptions/lobby-not-found-exception';
-import { WebsocketUserExceptionFilter } from '../exceptions/websocket-user-exception.filter';
+import {LobbyId, User} from '../socket-data.decorator';
+import {Logger, UseFilters} from '@nestjs/common';
+import {LobbyNotFoundException} from '../exceptions/lobby-not-found-exception';
+import {WebsocketUserExceptionFilter} from '../exceptions/websocket-user-exception.filter';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({cors: true, path: '/turn-tracker/socket', namespace: '/turn-tracker/socket'})
 @UseFilters(new WebsocketUserExceptionFilter())
 export class LobbyGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly lobbyService: LobbyService) {}
+  constructor(private readonly lobbyService: LobbyService) {
+  }
 
   @SubscribeMessage(LOBBY_UPDATE_EVENT)
   lobbyUpdate(
