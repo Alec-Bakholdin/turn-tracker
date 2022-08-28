@@ -22,6 +22,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          file: { context }/apps/turn-tracker-backend/Dockerfile
+          #file: { context }/apps/turn-tracker-backend/Dockerfile
           tags: abakholdin/turn-tracker-backend:latest
           push: true
