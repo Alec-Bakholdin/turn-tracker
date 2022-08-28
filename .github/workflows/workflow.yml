@@ -17,11 +17,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      #      - run: yarn install
-      #      - run: yarn nx run turn-tracker-backend:build:production
+      - run: yarn install
+      - run: yarn nx run turn-tracker-backend:build:production
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          #file: { context }/apps/turn-tracker-backend/Dockerfile
+          file: "{context}/apps/turn-tracker-backend/Dockerfile"
           tags: abakholdin/turn-tracker-backend:latest
           push: true
