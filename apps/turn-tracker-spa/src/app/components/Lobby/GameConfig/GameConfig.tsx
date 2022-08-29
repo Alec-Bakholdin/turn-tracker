@@ -11,6 +11,7 @@ import lobbyAtom from '../../../state/lobby';
 import GameTypeSelector from './GameTypeSelector';
 import PlayerList from './PlayerList/PlayerList';
 import TurnCountSelector from './TurnCountSelector';
+import GameConfigTitle from './GameConfigTitle';
 
 export default function GameConfig(): React.ReactElement {
   const [lobby] = useAtom(lobbyAtom);
@@ -31,6 +32,7 @@ export default function GameConfig(): React.ReactElement {
       className={'!mt-10 !h-fit w-11/12 sm:w-1/2 items-center'}
       spacing={2}
     >
+      <GameConfigTitle {...gameConfigProps} />
       <GameTypeSelector {...gameConfigProps} />
       <PlayerList {...gameConfigProps} />
       {lobby.gameConfig.editableTurns && (
