@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { Settings } from '@mui/icons-material';
 import UsernameEditor from './UsernameEditor';
 import { useNavigate } from 'react-router-dom';
 import useAuthQuery from '../../state/auth';
@@ -46,7 +45,7 @@ export default function MainMenu(): React.ReactElement {
 
   return (
     <Stack
-      className={'pb-10 w-1/2 h-fit max-w-md mt-5'}
+      className={'pb-10 w-11/12 sm:w-1/2 h-fit max-w-md mt-8'}
       spacing={4}
       alignItems={'center'}
     >
@@ -57,7 +56,6 @@ export default function MainMenu(): React.ReactElement {
         justifyContent={'space-between'}
       >
         <UsernameEditor />
-        <Settings />
       </Stack>
       <Box flex={1} />
       <Typography variant={'h3'} textAlign={'center'}>
