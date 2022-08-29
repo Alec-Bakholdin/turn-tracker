@@ -27,7 +27,10 @@ export default function GameConfigQrCodeButton(): React.ReactElement {
         open={open}
         onClose={handleClose}
         anchorReference={'anchorPosition'}
-        anchorPosition={{ top: 0, left: window.innerWidth / 2 }}
+        anchorPosition={{
+          top: window.innerHeight / 2 - 20,
+          left: window.innerWidth / 2,
+        }}
         transformOrigin={{
           vertical: 'center',
           horizontal: 'center',
