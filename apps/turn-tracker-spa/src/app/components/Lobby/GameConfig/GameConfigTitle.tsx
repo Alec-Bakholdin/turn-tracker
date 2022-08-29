@@ -1,7 +1,7 @@
 import React from 'react';
-import { IconButton, Stack, Typography } from '@mui/material';
-import { Link } from '@mui/icons-material';
+import { Stack, Typography } from '@mui/material';
 import GameConfigQrCodeButton from './GameConfigQrCodeButton';
+import GameConfigCopyUrlToClipboardButton from './GameConfigCopyUrlToClipboardButton';
 
 export default function GameConfigTitle(props: {
   id?: string;
@@ -10,9 +10,7 @@ export default function GameConfigTitle(props: {
     <Stack direction={'row'} className={'align-middle'}>
       <Typography variant={'h4'}>Lobby {props.id}</Typography>
       <GameConfigQrCodeButton />
-      <IconButton>
-        <Link fontSize={'medium'} className={'rounded-md bg-white p-0.5'} />
-      </IconButton>
+      <GameConfigCopyUrlToClipboardButton />
     </Stack>
   );
 }
