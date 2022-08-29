@@ -37,7 +37,7 @@ export default function GameConfigCopyUrlToClipboardButton(): React.ReactElement
         anchorPosition={{ top: 0, left: window.innerWidth / 2 }}
       >
         <Box className={'m-4'}>
-          <Typography>Url copied to clipboard</Typography>
+          <Typography>URL copied to clipboard</Typography>
         </Box>
       </Popover>
       <IconButton onClick={copyUrlToClipboard}>
