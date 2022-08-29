@@ -28,7 +28,7 @@ export default function GameConfig(): React.ReactElement {
   };
   return (
     <Stack
-      className={'!mt-10 !h-fit w-1/2 min-w-[400px] items-center'}
+      className={'!mt-10 !h-fit w-11/12 sm:w-1/2 items-center'}
       spacing={2}
     >
       <GameTypeSelector {...gameConfigProps} />
