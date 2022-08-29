@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Stack, TextField, Typography } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import { IconButton, Stack, TextField, Typography } from '@mui/material';
+import { Cancel, Check, Edit } from '@mui/icons-material';
 import useAuthQuery from '../../state/auth';
 
 export default function UsernameEditor(): React.ReactElement {
@@ -18,6 +18,7 @@ export default function UsernameEditor(): React.ReactElement {
     setIsEditing(true);
   };
   const handleSubmit = () => {
+    console.log('submitting');
     if (updatedUsername && updatedUsername !== username) {
       updateUserDto({ name: updatedUsername });
     }
@@ -44,27 +45,32 @@ export default function UsernameEditor(): React.ReactElement {
       className={'h-8'}
       direction={'row'}
       spacing={1}
+      width={'100%'}
       alignItems={'center'}
     >
       {isEditing && (
-        <TextField
-          label={'Username'}
-          onBlur={stopEditing}
-          onKeyDown={handleKeyDown}
-          onChange={handleOnChange}
-          value={updatedUsername}
-          className={'w-fit'}
-          autoFocus
-          onFocus={handleOnFocus}
-        />
+        <>
+          <TextField
+            label={'Username'}
+            onKeyDown={handleKeyDown}
+            onChange={handleOnChange}
+            value={updatedUsername}
+            className={'w-fit'}
+            autoFocus
+            onFocus={handleOnFocus}
+          />
+          <IconButton onClick={handleSubmit}>
+            <Check className={'text-green-400 hover:text-green-200'} />
+          </IconButton>
+          <IconButton onClick={stopEditing}>
+            <Cancel className={'text-red-400 hover:text-red-200'} />
+          </IconButton>
+        </>
       )}
       {!isEditing && (
         <>
           <Typography>{username ?? 'Username'}</Typography>
-          <Edit
-            onClick={startEditing}
-            className={'hover:fill-blue-200 hover:cursor-pointer'}
-          />
+          <Edit onClick={startEditing} className={'hover:fill-blue-200'} />
         </>
       )}
     </Stack>
