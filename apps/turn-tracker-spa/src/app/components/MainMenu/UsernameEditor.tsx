@@ -44,7 +44,6 @@ export default function UsernameEditor(): React.ReactElement {
     <Stack
       className={'h-8'}
       direction={'row'}
-      spacing={1}
       width={'100%'}
       alignItems={'center'}
     >
@@ -70,7 +69,9 @@ export default function UsernameEditor(): React.ReactElement {
       {!isEditing && (
         <>
           <Typography>{username ?? 'Username'}</Typography>
-          <Edit onClick={startEditing} className={'hover:fill-blue-200'} />
+          <IconButton onClick={startEditing}>
+            <Edit className={'text-white hover:fill-blue-200'} />
+          </IconButton>
         </>
       )}
     </Stack>
