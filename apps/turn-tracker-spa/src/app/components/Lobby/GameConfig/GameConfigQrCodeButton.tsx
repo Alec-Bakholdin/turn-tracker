@@ -11,7 +11,10 @@ export default function GameConfigQrCodeButton(): React.ReactElement {
   const handleClose = () => {
     setOpen(false);
   };
-  const qrCodeSize = Math.min(window.innerWidth, window.innerHeight) - 75;
+  const qrCodeSize =
+    window.innerWidth < window.innerHeight
+      ? window.innerWidth - 75
+      : window.innerHeight - 130;
   return (
     <>
       <IconButton onClick={handleOpen}>
@@ -24,10 +27,10 @@ export default function GameConfigQrCodeButton(): React.ReactElement {
         open={open}
         onClose={handleClose}
         anchorReference={'anchorPosition'}
-        anchorPosition={{ top: 0, left: 0 }}
+        anchorPosition={{ top: 0, left: window.innerWidth / 2 }}
         transformOrigin={{
           vertical: 'center',
-          horizontal: 'right',
+          horizontal: 'center',
         }}
       >
         <Box className={'bg-gray-600 p-5 flex flex-col'}>
