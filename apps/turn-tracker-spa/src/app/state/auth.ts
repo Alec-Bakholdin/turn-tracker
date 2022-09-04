@@ -32,13 +32,15 @@ export default function useAuthQuery() {
       retry: 3,
       refetchOnWindowFocus: false,
       onSuccess: saveAuthDto,
-      onSettled: () => setUpdatedUser(undefined),
+      onError: () => setUpdatedUser(undefined),
     }
   );
 
   useEffect(() => {
     if (updatedUser) {
-      loginResponse.refetch();
+      loginResponse
+        .refetch()
+        .then(() => console.log('Successfully fetched auth'));
     }
   }, [updatedUser]);
 
