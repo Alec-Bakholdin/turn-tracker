@@ -4,7 +4,7 @@ import { Button, CircularProgress, SxProps, Typography } from '@mui/material';
 export default function LoadingTextButton(props: {
   text: string;
   loading: boolean;
-  onClick?: () => void;
+  onClick: () => void;
   onFinishLoading?: () => void;
   size?: number; // default: 25
   sx?: SxProps;

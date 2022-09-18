@@ -37,7 +37,11 @@ export default function UsernameDialog(): React.ReactElement {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
-        <LoadingTextButton text={'SUBMIT'} loading={isLoading} />
+        <LoadingTextButton
+          text={'SUBMIT'}
+          loading={isLoading}
+          onClick={handleSubmit}
+        />
       </Stack>
     </Popover>
   );
