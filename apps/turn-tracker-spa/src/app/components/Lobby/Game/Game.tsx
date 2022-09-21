@@ -6,6 +6,7 @@ import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { LOBBY_PLAYER_READY_EVENT } from '@turn-tracker-nx-nestjs-react/turn-tracker-types';
 import useAuthQuery from '../../../state/auth';
 import { Check } from '@mui/icons-material';
+import DiceRoll from '../../DiceRoll'
 
 export default function Game(): React.ReactElement {
   const { authDto } = useAuthQuery();
@@ -30,6 +31,7 @@ export default function Game(): React.ReactElement {
                 />
               </IconButton>
             </Stack>
+            <DiceRoll size={100} rollingTime={500} placement={'bottom-left'}/>
           </>
         )}
       </Stack>
