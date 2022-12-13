@@ -1,0 +1,13 @@
+.player-row {
+  cursor: pointer;
+  width: fit-content;
+  border-radius: 100px;
+  box-shadow: dimgray;
+  padding: 5px 10px;
+  margin: 7px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5em;
+}
+
+/*# sourceMappingURL=PlayerOrder.css.map */

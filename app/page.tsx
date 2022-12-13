@@ -1,26 +1,25 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Button, Grid, Typography } from "@mui/material";
 import { useUser } from "hooks/useUser";
+import { ref, set } from "@firebase/database";
+import { database } from "config/firebaseApp";
 import { useRouter } from "next/navigation";
-import { useGame } from "hooks/useGame";
+import { newGame } from "types/Game";
 
-export default function App(): React.ReactElement {
-  const { user } = useUser();
+export default function Home(): React.ReactElement {
+  const user = useUser();
   const router = useRouter();
-  useEffect(() => {
-    if (user?.gameId) {
-      router.push(`/game/${user.gameId}`);
-    }
-  }, [user?.gameId]);
-  const { createGame } = useGame();
   const handleCreateGame = async () => {
-    await createGame();
+    if (!user) throw new Error("User is not logged in");
+    const game = newGame(user.uid);
+    await set(ref(database, `/game/${game.id}`), game);
+    await router.push(`/game/${game.id}`);
   };
 
   return (
-    <Grid container sx={{ marginTop: 10, marginBottom: 10 }} spacing={4}>
+    <Grid container /*sx={{ marginTop: 10, marginBottom: 10 }}*/ spacing={4}>
       <Grid item xs={12}>
         <Typography variant={"h2"} textAlign={"center"}>
           Whose Turn is it Anyways?
