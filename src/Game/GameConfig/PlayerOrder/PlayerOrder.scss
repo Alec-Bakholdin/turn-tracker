@@ -1,0 +1,17 @@
+.player-order {
+  min-width: 600px;
+
+  .player-row {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+
+    width: 100%;
+
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5em;
+  }
+}

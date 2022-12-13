@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useGame } from "../types/game";
 import { useUser } from "../types/user";
+import GameConfig from "./GameConfig/GameConfig";
 
 export default function Game(): React.ReactElement {
   const { game, joinGame } = useGame();
@@ -11,5 +12,5 @@ export default function Game(): React.ReactElement {
     }
   }, [game, user]);
 
-  return <>{JSON.stringify(game)}</>;
+  return <>{game?.status === "config" && <GameConfig />}</>;
 }

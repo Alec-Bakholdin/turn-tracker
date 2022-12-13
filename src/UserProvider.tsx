@@ -15,6 +15,7 @@ export default function UserProvider({
   const updateUsername = (newUsername: string) => {
     setCookie("username", newUsername);
   };
+  console.log(username);
   useEffect(() => {
     signInAnonymously(auth)
       .then(({ user }) => {

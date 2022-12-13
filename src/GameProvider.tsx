@@ -48,7 +48,12 @@ export default function GameProvider({
     const playerMap = game!.playerMap;
     const playerObj = playerMap[user!.uid] || newPlayer(user!);
     const playerRef = gameRef(gameId!, "playerMap", user!.uid);
-    await set(playerRef, { ...playerObj, active: true }).then(() =>
+    if (!game!.playerOrder.includes(user!.uid)) {
+      const playerOrder = [...game!.playerOrder, user!.uid];
+      await updateGame({ playerOrder });
+    }
+    const username = user!.username;
+    await set(playerRef, { ...playerObj, username, active: true }).then(() =>
       onDisconnect(playerRef).update({ active: false })
     );
   }

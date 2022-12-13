@@ -6,13 +6,11 @@ import GameProvider from "./GameProvider";
 
 export default function App(): React.ReactElement {
   return (
-    <>
+    <GameProvider>
       <Container maxWidth={"md"} sx={{ paddingTop: 5 }}>
-        <GameProvider>
-          <Outlet />
-        </GameProvider>
+        <Outlet />
       </Container>
       <NavBar />
-    </>
+    </GameProvider>
   );
 }

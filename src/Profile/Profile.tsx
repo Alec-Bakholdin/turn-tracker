@@ -7,16 +7,11 @@ import {
   CardHeader,
   Divider,
   Grid,
-  IconButton,
   Stack,
-  Typography,
 } from "@mui/material";
-import { useUser } from "../types/user";
-import { Edit } from "@mui/icons-material";
+import UsernameEditor from "./UsernameEditor";
 
 export default function Profile(): React.ReactElement {
-  const { user } = useUser();
-
   return (
     <Stack>
       <Card>
@@ -33,14 +28,7 @@ export default function Profile(): React.ReactElement {
               <Divider />
             </Grid>
             <Grid item>
-              <Typography variant={"body1"}>
-                <b>Username:</b> {user?.username}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <IconButton>
-                <Edit />
-              </IconButton>
+              <UsernameEditor />
             </Grid>
           </Grid>
         </CardContent>
