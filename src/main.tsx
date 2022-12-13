@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainMenu from "./MainMenu/MainMenu";
 import "./main.scss";
 import App from "./App";
+import Profile from "./Profile/Profile";
 
 const router = createBrowserRouter(
   [
@@ -19,6 +20,10 @@ const router = createBrowserRouter(
         {
           path: "/",
           element: <MainMenu />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
         },
       ],
     },
