@@ -3,6 +3,7 @@ import { PlayerMap } from "./player";
 import React, { useContext } from "react";
 import { DatabaseReference, ref } from "firebase/database";
 import { db } from "../firebaseApp";
+import { Phase } from "./phase";
 
 export interface Game {
   id: string;
@@ -10,6 +11,7 @@ export interface Game {
   playerOrder: string[];
   playerMap: PlayerMap;
   status: "config" | "inProgress" | "done";
+  phases?: Phase[];
 }
 
 export function newGame(uid: string): Game {
