@@ -1,0 +1,13 @@
+.create-new-game-button {
+  position: fixed;
+
+  bottom: 5em;
+  left: 50vw;
+  transform: translateX(-50%);
+  width: min-content;
+  border-radius: 50%;
+
+  button {
+    padding: 20px;
+  }
+}

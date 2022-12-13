@@ -10,6 +10,7 @@ import MainMenu from "./MainMenu/MainMenu";
 import "./main.scss";
 import App from "./App";
 import Profile from "./Profile/Profile";
+import Game from "./Game/Game";
 
 const router = createBrowserRouter(
   [
@@ -25,6 +26,10 @@ const router = createBrowserRouter(
           path: "/profile",
           element: <Profile />,
         },
+        {
+          path: "/game",
+          element: <Game />,
+        },
       ],
     },
   ]
@@ -32,16 +37,14 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <SnackbarProvider>
-        <CookiesProvider>
-          <UserProvider>
-            <RouterProvider router={router} />
-          </UserProvider>
-        </CookiesProvider>
-      </SnackbarProvider>
-    </ThemeProvider>
-  </React.StrictMode>
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <SnackbarProvider>
+      <CookiesProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </CookiesProvider>
+    </SnackbarProvider>
+  </ThemeProvider>
 );

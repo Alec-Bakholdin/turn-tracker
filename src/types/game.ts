@@ -1,6 +1,6 @@
 import { util } from "../util";
 import { PlayerMap } from "./player";
-import React from "react";
+import React, { useContext } from "react";
 import { DatabaseReference, ref } from "firebase/database";
 import { db } from "../firebaseApp";
 
@@ -26,14 +26,18 @@ export interface GameActions {
     game?: Game;
     createGame: () => Promise<string>; // returns the gameId of the created game
     updateGame: (update: Partial<Game>) => Promise<void>;
-    joinGame: (gameId: string) => void;
+    joinGame: () => void;
 }
 
 export const GameContext = React.createContext<GameActions>({
     createGame: async () => "",
     updateGame: async (_) => {},
-    joinGame: (_) => {}
+    joinGame: () => {}
 })
+
+export function useGame() {
+  return useContext(GameContext);
+}
 
 /**
  * Gets a {@link DatabaseReference} to the game object, or a nested path
