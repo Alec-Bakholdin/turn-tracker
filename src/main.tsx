@@ -2,15 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "notistack";
-import { theme } from "./config/theme";
+import { theme } from "./theme";
 import UserProvider from "./UserProvider";
 import { CookiesProvider } from "react-cookie";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainMenu from "./MainMenu/MainMenu";
-import "./styles/main.scss";
-import NavBar from "./NavBar/NavBar";
+import "./main.scss";
 import App from "./App";
-import * as path from "path";
 
 const router = createBrowserRouter(
   [

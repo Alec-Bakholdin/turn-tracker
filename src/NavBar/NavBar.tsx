@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar, Stack, Toolbar } from "@mui/material";
+import { AppBar, IconButton, Stack, Toolbar } from "@mui/material";
 import { Home, Person } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
@@ -14,10 +14,14 @@ export default function NavBar(): React.ReactElement {
           spacing={4}
         >
           <Link to={"/"}>
-            <Home />
+            <IconButton>
+              <Home />
+            </IconButton>
           </Link>
           <Link to={"/profile"}>
-            <Person />
+            <IconButton>
+              <Person />
+            </IconButton>
           </Link>
         </Stack>
       </Toolbar>

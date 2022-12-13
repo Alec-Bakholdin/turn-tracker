@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { User, UserActions, UserContext } from "./types/user";
 import { signInAnonymously } from "firebase/auth";
-import { auth } from "./config/firebaseApp";
-import { useSnackbar } from "notistack";
+import { auth } from "./firebaseApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCookies } from "react-cookie";
 
@@ -35,7 +34,7 @@ export default function UserProvider({
   console.log(authUser);
   const userActions: UserActions = {
     updateUser,
-    ...(authUser && { user: {uid: authUser.uid, username} }),
+    ...(authUser && { user: { uid: authUser.uid, username } }),
   };
   return (
     <UserContext.Provider value={userActions}>{children}</UserContext.Provider>
