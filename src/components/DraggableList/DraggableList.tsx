@@ -15,15 +15,18 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import Sortable from "./Sortable";
+import "./DraggableList.scss";
 
 export default function DraggableList({
   items,
   setItems,
   mapItem,
+  useHandle,
 }: {
   items: string[];
   setItems: (arr: string[]) => void | Promise<void>;
   mapItem: (item: string) => React.ReactElement;
+  useHandle?: boolean;
 }): React.ReactElement {
   const order = useMemo(() => items, [items]);
   const sensors = useSensors(
@@ -47,7 +50,7 @@ export default function DraggableList({
     >
       <SortableContext items={order} strategy={verticalListSortingStrategy}>
         {order.map((item) => (
-          <Sortable key={item} id={item}>
+          <Sortable key={item} id={item} useHandle={useHandle}>
             {mapItem(item)}
           </Sortable>
         ))}

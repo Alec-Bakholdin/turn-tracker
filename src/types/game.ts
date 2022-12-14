@@ -1,9 +1,9 @@
-import { util } from "../util";
+import { randomString } from "../util";
 import { PlayerMap } from "./player";
 import React, { useContext } from "react";
 import { DatabaseReference, ref } from "firebase/database";
 import { db } from "../firebaseApp";
-import { Phase } from "./phase";
+import { PhaseMap } from "./phase";
 
 export interface Game {
   id: string;
@@ -11,12 +11,13 @@ export interface Game {
   playerOrder: string[];
   playerMap: PlayerMap;
   status: "config" | "inProgress" | "done";
-  phases?: Phase[];
+  phaseOrder?: string[];
+  phaseMap?: PhaseMap;
 }
 
 export function newGame(uid: string): Game {
     return {
-        id: util(6),
+        id: randomString(6),
         leaderId: uid,
         playerOrder: [uid],
         playerMap: { [uid]: { uid, active: false, username: uid } },
@@ -48,7 +49,6 @@ export function useGame() {
  */
 export function gameRef(gameId: string, ...path: string[]): DatabaseReference {
     const computedPath = path.length > 0 ? "/" + path.join("/") : "";
-    console.log(computedPath);
     return ref(db, `/game/${gameId}${computedPath}`);
 }
 

@@ -1,0 +1,16 @@
+.draggable-container {
+  display: flex;
+  flex-wrap: nowrap;
+  .drag-handle {
+    width: 0;
+    display: flex;
+    align-items: center;
+    .drag-handle-button {
+      cursor: grab;
+      transform: translateX(-120%);
+    }
+  }
+}
+.drag-pointer {
+  cursor: grab;
+}
