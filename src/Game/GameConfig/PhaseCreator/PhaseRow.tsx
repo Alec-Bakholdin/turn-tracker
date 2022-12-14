@@ -1,15 +1,18 @@
 import React, { useMemo } from "react";
 import { Phase } from "../../../types/phase";
 import {
-  Button,
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
   Grid,
+  IconButton,
+  Stack,
   TextField,
 } from "@mui/material";
 import { gameRef, useGame } from "../../../types/game";
 import { remove, update } from "firebase/database";
+import { Delete } from "@mui/icons-material";
 
 export default function PhaseRow({
   phase,
@@ -33,35 +36,38 @@ export default function PhaseRow({
   };
 
   return (
-    <Grid
-      container
-      alignItems={"center"}
+    <Stack
+      direction={"row"}
       className={"phase-row"}
       bgcolor={"background.default"}
     >
-      <Grid item xs={12}>
-        <TextField
-          value={phase.name}
-          onChange={handleChangeName}
-          label={"Name"}
-        />
-      </Grid>
-      <Grid item>
-        <FormControl>
-          <FormControlLabel
-            control={
-              <Checkbox
-                onChange={handleToggleSimultaneous}
-                checked={phase.simultaneous}
-              />
-            }
-            label={"Simultaneous"}
+      <Grid container>
+        <Grid item xs={12}>
+          <TextField
+            value={phase.name}
+            onChange={handleChangeName}
+            label={"Name"}
           />
-        </FormControl>
+        </Grid>
+        <Grid item>
+          <FormControl>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={handleToggleSimultaneous}
+                  checked={phase.simultaneous}
+                />
+              }
+              label={"Simultaneous"}
+            />
+          </FormControl>
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <Button onClick={handleRemove}>Remove</Button>
-      </Grid>
-    </Grid>
+      <Box display={"flex"} alignItems={"center"}>
+        <IconButton onClick={handleRemove}>
+          <Delete />
+        </IconButton>
+      </Box>
+    </Stack>
   );
 }

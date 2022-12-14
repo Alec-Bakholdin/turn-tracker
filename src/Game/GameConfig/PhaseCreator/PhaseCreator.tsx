@@ -1,8 +1,14 @@
 import React, { useMemo } from "react";
-import { Box, Card, CardContent, CardHeader, IconButton } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Stack,
+} from "@mui/material";
 import { Game, gameRef, useGame } from "../../../types/game";
 import { newPhase, PhaseMap } from "../../../types/phase";
-import DraggableList from "../../../components/DraggableList/DraggableList";
 import PhaseRow from "./PhaseRow";
 import "./PhaseCreator.scss";
 import { Add } from "@mui/icons-material";
@@ -29,20 +35,19 @@ export default function PhaseCreator({
     <Card className={"phase-creator"}>
       <CardHeader title={"Phase Configuration"} />
       <CardContent>
-        <DraggableList
-          items={phases}
-          setItems={updatePhaseOrder}
-          mapItem={(item) => <PhaseRow phase={phaseMap[item]} />}
-          useHandle
-        />
-        <Box display={"flex"} justifyContent={"center"}>
-          <IconButton
-            className={"add-phase-button"}
-            onClick={handleCreatePhase}
-          >
-            <Add />
-          </IconButton>
-        </Box>
+        <Stack>
+          {phases.map((phaseId) => (
+            <PhaseRow phase={phaseMap[phaseId]} />
+          ))}
+          <Box display={"flex"} justifyContent={"center"}>
+            <IconButton
+              className={"add-phase-button"}
+              onClick={handleCreatePhase}
+            >
+              <Add />
+            </IconButton>
+          </Box>
+        </Stack>
       </CardContent>
     </Card>
   );
