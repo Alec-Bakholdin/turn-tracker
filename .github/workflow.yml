@@ -1,0 +1,23 @@
+name: Deploy to DockerHub
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: yarn install
+      - name: Build Frontend
+        run: yarn run build --base=/turn-tracker
+      - name: Upload Frontend
+        uses: SamKirkland/FTP-Deploy-Action@4.3.1
+        with:
+          server: ${{secrets.FTP_SERVER}}
+          username: ${{secrets.FTP_USER}}
+          password: ${{secrets.FTP_PASSWORD}}
+          local-dir: ./dist/
+          dangerous-clean-state: true

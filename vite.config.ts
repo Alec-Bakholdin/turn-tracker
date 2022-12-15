@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
+import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
+import {resolve} from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,5 +9,15 @@ export default defineConfig({
     alias: {
       "~": resolve(__dirname, "src"),
     },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        game: resolve(__dirname, "game/index.html"),
+        profile: resolve(__dirname, "profile/index.html"),
+      },
+    },
+
   },
 });

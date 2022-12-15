@@ -15,7 +15,7 @@ import Game from "./Game/Game";
 const router = createBrowserRouter(
   [
     {
-      path: "/",
+      path: `/`,
       element: <App />,
       children: [
         {
@@ -32,8 +32,8 @@ const router = createBrowserRouter(
         },
       ],
     },
-  ]
-  /*{ basename: "/turn-tracker" }*/
+  ],
+  { basename: import.meta.env.BASE_URL }
 );
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
