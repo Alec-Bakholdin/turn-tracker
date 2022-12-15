@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Game, GameContext, gameRef, newGame } from "./types/game";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { useUser } from "./types/user";
-import { useSnackbar } from "notistack";
+import { SnackbarKey, useSnackbar } from "notistack";
 import { onDisconnect, set, update } from "firebase/database";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { newPlayer } from "./types/player";
+import { Button, IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 export default function GameProvider({
   children,
@@ -13,12 +15,39 @@ export default function GameProvider({
   children?: React.ReactNode;
 }): React.ReactElement {
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const gameId = searchParams.get("gameId");
   const dbRef = gameId ? gameRef(gameId) : undefined;
   const [game] = useObjectVal<Game>(dbRef);
+
+  const [gameReminderKey, setGameReminderKey] = useState<
+    SnackbarKey | undefined
+  >();
+  const handleNavigate = () => {
+    navigate(`/game?gameId=${gameId}`);
+  };
+  useEffect(() => {
+    if (!location.pathname.endsWith("/game") && game && !gameReminderKey) {
+      const key = enqueueSnackbar("It looks like you're in a game", {
+        autoHideDuration: null,
+        action: (key) => (
+          <>
+            <Button onClick={handleNavigate}>Return to Game</Button>
+            <IconButton onClick={() => closeSnackbar(key)} color={"primary"}>
+              <Close />
+            </IconButton>
+          </>
+        ),
+      });
+      setGameReminderKey(key);
+    } else if (location.pathname.endsWith("/game") && gameReminderKey) {
+      closeSnackbar(gameReminderKey);
+      setGameReminderKey(undefined);
+    }
+  }, [location]);
 
   const { user } = useUser();
 

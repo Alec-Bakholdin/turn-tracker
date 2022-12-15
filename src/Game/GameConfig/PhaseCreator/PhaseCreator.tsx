@@ -32,7 +32,16 @@ export default function PhaseCreator({
   };
 
   return (
-    <Card className={"phase-creator"}>
+    <Card
+      className={"phase-creator"}
+      sx={{
+        width: {
+          xs: 400,
+          sm: 500,
+          md: 600,
+        },
+      }}
+    >
       <CardHeader title={"Phase Configuration"} />
       <CardContent>
         <Stack>

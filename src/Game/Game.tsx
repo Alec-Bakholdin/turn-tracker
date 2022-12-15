@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useGame } from "../types/game";
 import { useUser } from "../types/user";
 import GameConfig from "./GameConfig/GameConfig";
+import InProgressGame from "./InProgressGame/InProgressGame";
 
 export default function Game(): React.ReactElement {
   const { game, joinGame } = useGame();
@@ -12,5 +13,10 @@ export default function Game(): React.ReactElement {
     }
   }, [game, user]);
 
-  return <>{game?.status === "config" && <GameConfig />}</>;
+  return (
+    <>
+      {game?.status === "config" && <GameConfig />}
+      {game?.status === "inProgress" && <InProgressGame />}
+    </>
+  );
 }

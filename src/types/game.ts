@@ -8,6 +8,9 @@ import { PhaseMap } from "./phase";
 export interface Game {
   id: string;
   leaderId: string;
+  activePhase?: string;
+  activePlayers?: string[];
+  readyPlayers?: string[];
   playerOrder: string[];
   playerMap: PlayerMap;
   status: "config" | "inProgress" | "done";
